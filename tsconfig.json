@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "es5", // target means specific version of JS(EcmaJS) that your TS will be transpiled to
+      "module": "esnext",
+      "lib": ["ES2015", "DOM", "DOM.Iterable", "ESNext"], //The set of language features you want TS to include and compile so that your code can use these newer features
+      "strict": true,
+      "types": ["jest","cypress"],// eсли указан параметр "types", то из всех найденных будут использованы только те описания типов, что указаны в его массиве, а именно: "./typings/node", "./typings/lodash", "./typings/express".
+        // Другие найденные типы использоваться не будут.
+      "noEmit": true
+    },
+    // only compile the production TS files
+    "include": ["src/*.ts", "src/*.js"],
+    "exclude": ["src/*.test.ts"]
+  }
+

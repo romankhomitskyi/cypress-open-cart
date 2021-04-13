@@ -1,0 +1,14 @@
+// Cypress ESLint Plugin
+// https://github.com/cypress-io/eslint-plugin-cypress 
+
+// IDEA Integration, extensions 
+// https://docs.cypress.io/guides/tooling/IDE-integration.html#File-Opener-Preference
+{
+    "extends": [
+      "plugin:cypress/recommended"
+    ],
+    
+    "plugins": [
+        "cypress"
+      ]
+  }
