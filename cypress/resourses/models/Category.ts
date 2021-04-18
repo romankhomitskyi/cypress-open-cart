@@ -14,3 +14,9 @@ export const generalTabLocators: GeneralTabLocators = {
     categoryName: AddCategoryPageLocators.CategoryNameField,
     megaTag: AddCategoryPageLocators.MetaTagTitleField,
 };
+
+export interface Category {
+    name: string;
+    megaTag: string;
+    parent: string;
+}
