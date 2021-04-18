@@ -1,26 +1,32 @@
+import { type } from '../../node_modules/cypress/types/jquery/index';
 import { AddProductPageLocators } from "../resourses/WebElements";
 
 //Functions for use in Add Product Page
 
 
 export function typeProductName(productName: string): void {
-    cy.get(AddProductPageLocators.ProductNameField).type(productName);
+    cy.get(AddProductPageLocators.ProductNameField)
+        .type(productName);
 }
 
 export function typeMegaTagTitle(megaTagTitle: string): void {
-    cy.get(AddProductPageLocators.Meta_Tag_TitleField).type(megaTagTitle);
+    cy.get(AddProductPageLocators.Meta_Tag_TitleField)
+        .type(megaTagTitle);
 }
 
 export function clickDataTab(): void {
-    cy.get(AddProductPageLocators.DataTab).click();
+    cy.get(AddProductPageLocators.DataTab)
+        .click();
 }
 
 export function typeModel(model: string): void {
-    cy.get(AddProductPageLocators.ModelField).type(model);
+    cy.get(AddProductPageLocators.ModelField)
+        .type(model);
 }
 
 export function clickLinksTab(): void {
-    cy.get(AddProductPageLocators.LinksTab).click();
+    cy.get(AddProductPageLocators.LinksTab)
+        .click();
 }
 
 export function typeCategories(categories: string | string[]): void {
@@ -34,19 +40,31 @@ export function typeCategories(categories: string | string[]): void {
                     route: 'catalog/category/autocomplete',
 
                 }
-            },
-                { fixture: 'categories' }).as('getCategories');
+            }).as('getCategories');
+            // { fixture: 'categories' }
+            cy.get(AddProductPageLocators.CategoriesField)
+                .click()
+                .clear()
+                .type(category);
 
-            cy.get(AddProductPageLocators.CategoriesField).click();
 
             cy.wait('@getCategories');
-            cy.contains(AddProductPageLocators.CategoriesDropDown, category).should('be.visible').click();
+            cy.contains(AddProductPageLocators.CategoriesDropDown, category)
+                .should('be.visible')
+                .click();
+
 
 
         });
     } else {
-        cy.get(AddProductPageLocators.CategoriesField).click();
-        cy.contains(AddProductPageLocators.CategoriesDropDown, categories).should('be.visible').click();
+        cy.get(AddProductPageLocators.CategoriesField)
+            .click()
+            .clear()
+            .type(categories);
+
+        cy.contains(AddProductPageLocators.CategoriesDropDown, categories)
+            .should('be.visible')
+            .click();
 
 
     }
@@ -62,6 +80,7 @@ export function saveAddedProduct(): void {
 
         }
     }).as('addedProduct');
-    cy.get(AddProductPageLocators.Save_Product_Button).click();
+    cy.get(AddProductPageLocators.Save_Product_Button)
+        .click();
 }
 

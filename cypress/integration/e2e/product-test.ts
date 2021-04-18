@@ -1,29 +1,44 @@
 import * as AddProductPage from "../../functions/AddProductPage";
 import * as LeftMenuPart from "../../functions/LeftMenuPart";
 import * as ProductPage from "../../functions/ProductPage";
-const newProduct = require('../../fixtures/new-product.json');
+import { Product } from '../../resourses/models/Product';
 
 
-describe('Manage product test', () => {
+describe('Product creation', () => {
 
-    before(() => {
-        cy.loginByApi();
-        cy.database('deleteData', 'oc_product_description', newProduct.productName);
-    });
-    it('should add new product', () => {
+    describe('Adding new product', () => {
 
-        LeftMenuPart.goToProductPage();
-        ProductPage.gotoAddProductPage();
-        AddProductPage.typeProductName(newProduct.productName);
-        AddProductPage.typeMegaTagTitle(newProduct.megaTag);
-        AddProductPage.clickDataTab();
-        AddProductPage.typeModel(newProduct.model);
-        AddProductPage.clickLinksTab();
-        AddProductPage.typeCategories(newProduct.category);
-        AddProductPage.saveAddedProduct();
 
-        //Assertion
-        ProductPage.assertSuccessMessageDisplayed();
+        const product: Product = {
+            name: 'TOMEN200',
+            metaTag: 'nout',
+            model: 'JK',
+            categories: ['Cameras', 'Components']
 
+        };
+
+        before(() => {
+            //Setup
+            cy.loginByApi();
+            cy.database('deleteData', 'oc_product_description', product.name);
+
+        });
+
+        it('When all mandatory fields are filled, success message is displayed', () => {
+
+            //Act
+            LeftMenuPart.goToProductPage();
+            ProductPage.gotoAddProductPage();
+            AddProductPage.typeProductName(product.name);
+            AddProductPage.typeMegaTagTitle(product.metaTag);
+            AddProductPage.clickDataTab();
+            AddProductPage.typeModel(product.model);
+            AddProductPage.clickLinksTab();
+            AddProductPage.typeCategories(product.categories);
+            AddProductPage.saveAddedProduct();
+
+            //Assertion
+            ProductPage.assertSuccessMessageDisplayed();
+        });
     });
 });

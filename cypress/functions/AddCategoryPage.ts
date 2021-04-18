@@ -10,16 +10,23 @@ function isString(value: string | null | undefined): value is string {
 
 
 export function clickDataTab(): void {
-    cy.get(AddCategoryPageLocators.DataTab).click();
+    cy.get(AddCategoryPageLocators.DataTab)
+        .click();
 }
 
 export function selectCategoryParent(categoryParent: string): void {
-    cy.get(AddCategoryPageLocators.ParentField).click();
-    cy.contains(AddCategoryPageLocators.ParentsDropDown, categoryParent).should('be.visible').click();
+    if (isString(categoryParent)) {
+        cy.get(AddCategoryPageLocators.ParentField)
+            .click();
+        cy.contains(AddCategoryPageLocators.ParentsDropDown, categoryParent)
+            .should('be.visible')
+            .click();
+    }
 }
 
 export function checkTopCheckBox(): void {
-    cy.get(AddCategoryPageLocators.TopCheckBox).check();
+    cy.get(AddCategoryPageLocators.TopCheckBox)
+        .check();
 }
 
 
@@ -33,11 +40,12 @@ export function fillGeneralTab(generalTabData: Partial<GeneralTabData>) {
         const value = generalTabData[key];
         if (locator && isString(value)) {
 
-            cy.get(locator).type(value);
+            cy.get(locator)
+                .type(value);
         }
     });
 }
-export function saveAddedCategort(): void {
+export function saveAddedCategory(): void {
     cy.intercept({
         method: 'POST',
         url: `/${Cypress.env('adminUrl')}`,
@@ -46,6 +54,7 @@ export function saveAddedCategort(): void {
 
         }
     }).as('addedCategory');
-    cy.get(AddCategoryPageLocators.SaveCategoryButton).click();
+    cy.get(AddCategoryPageLocators.SaveCategoryButton)
+        .click();
 }
 
