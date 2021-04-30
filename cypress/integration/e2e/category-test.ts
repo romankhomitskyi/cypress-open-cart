@@ -6,24 +6,11 @@ import * as AddProductPage from '../../functions/AddProductPage';
 import { Category } from '../../resourses/models/Category';
 import { Product } from '../../resourses/models/Product';
 
-function createCategory(name: string, metaTag: string, parent: string) {
-    LeftMenuPart.goToCategoriesPage();
-    CategoriesPage.goToAddCategoryPage();
-    AddCategoryPage.fillGeneralTab({
-        megaTag: metaTag,
-        categoryName: name
-    });
-    AddCategoryPage.clickDataTab();
-    AddCategoryPage.selectCategoryParent(parent);
-    AddCategoryPage.checkTopCheckBox();
-    AddCategoryPage.saveAddedCategory();
-
-}
 describe('Category creation', () => {
 
     describe('Adding new category', () => {
 
-
+        // Data for Category creation
         const category: Category = {
             name: 'Routers',
             megaTag: "routers",
@@ -31,6 +18,7 @@ describe('Category creation', () => {
 
         };
 
+        // Data for Product creation
         const product: Product = {
             name: 'TOMEN200',
             metaTag: 'nout',
@@ -39,10 +27,16 @@ describe('Category creation', () => {
 
         };
 
+        let token: JQuery<HTMLElement>;
 
         before(() => {
 
             cy.loginByApi();
+
+            // Getting token after login
+            cy.get('@token1').then(givenToken => {
+                token = givenToken;
+            });
         });
 
         beforeEach(() => {
@@ -53,13 +47,43 @@ describe('Category creation', () => {
         });
 
         it('When all mandatory fields are filled, success message is displayed', () => {
-            createCategory(category.name, category.megaTag, category.parent);
+            LeftMenuPart.goToCategoriesPage();
+            CategoriesPage.goToAddCategoryPage();
+            AddCategoryPage.fillGeneralTab({
+                megaTag: category.megaTag,
+                categoryName: category.name
+            });
+            AddCategoryPage.clickDataTab();
+            AddCategoryPage.selectCategoryParent(category.parent);
+            AddCategoryPage.checkTopCheckBox();
+            AddCategoryPage.saveAddedCategory();
 
             CategoriesPage.assertSuccessMessageDisplayed();
         });
 
         it('When category is created, should create product with that category', () => {
-            createCategory(category.name, category.megaTag, category.parent);
+
+            // Request to create category ahead of time
+            cy.request({
+                method: 'POST',
+                followRedirect: false,
+                form: true,
+                url: `/${Cypress.env("adminUrl")}`,
+                body: {
+                    "category_description[1][name]": "Routers",
+                    "category_description[1][meta_title]": "routers",
+                    "path": "Components",
+                    "parent_id": "25",
+                    "top": "1"
+
+                },
+                qs: {
+                    route: 'catalog/category/add',
+                    user_token: token,
+                }
+            });
+
+
 
             LeftMenuPart.goToProductPage();
             ProductPage.gotoAddProductPage();
@@ -71,7 +95,7 @@ describe('Category creation', () => {
             AddProductPage.typeCategories(product.categories);
             AddProductPage.saveAddedProduct();
 
-            CategoriesPage.assertSuccessMessageDisplayed();
+            ProductPage.assertSuccessMessageDisplayed();
         });
     });
 });
