@@ -38,13 +38,14 @@ Cypress.Commands.add('loginByApi', () => {
 
         const token = url.parse(response.redirectedToUrl, true).query.user_token;
         console.log('TOKEN ', token);
-
         if (!token || typeof token !== 'string') {
             return Cypress.log({
 
                 message: `${'TOKEN IS INCORRECT'} |  Token is ${token}`,
             });
         }
+        cy.wrap(token).as('token1');
+
         cy.request({
             method: 'GET',
             followRedirect: false,
