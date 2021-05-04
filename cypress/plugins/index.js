@@ -57,10 +57,23 @@ module.exports = (on, config) => {
       return queryDB(connectionInfo, query)
     },
 
-    deleteData({ entity, item }) {
+    deleteData({ item, entity }) {
       const connectionInfo = config.env.opencartDb;
 
       const query = `DELETE FROM opencart.${entity} WHERE NAME LIKE "${item}";`
+
+      if (!connectionInfo) {
+        throw new Error(`Do not have DB connection under name ${dbName}`)
+      }
+
+      return queryDB(connectionInfo, query)
+    },
+    getCategoryParentId({ item, entity }) {
+
+
+      const connectionInfo = config.env.opencartDb;
+
+      const query = `SELECT category_id from opencart.oc_category_description pd WHERE NAME LIKE "${item}";`
 
       if (!connectionInfo) {
         throw new Error(`Do not have DB connection under name ${dbName}`)
