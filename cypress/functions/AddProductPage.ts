@@ -5,82 +5,82 @@ import { AddProductPageLocators } from "../resourses/WebElements";
 
 
 export function typeProductName(productName: string): void {
-    cy.get(AddProductPageLocators.ProductNameField)
-        .type(productName);
+	cy.get(AddProductPageLocators.ProductNameField)
+		.type(productName);
 }
 
 export function typeMegaTagTitle(megaTagTitle: string): void {
-    cy.get(AddProductPageLocators.Meta_Tag_TitleField)
-        .type(megaTagTitle);
+	cy.get(AddProductPageLocators.Meta_Tag_TitleField)
+		.type(megaTagTitle);
 }
 
 export function clickDataTab(): void {
-    cy.get(AddProductPageLocators.DataTab)
-        .click();
+	cy.get(AddProductPageLocators.DataTab)
+		.click();
 }
 
 export function typeModel(model: string): void {
-    cy.get(AddProductPageLocators.ModelField)
-        .type(model);
+	cy.get(AddProductPageLocators.ModelField)
+		.type(model);
 }
 
 export function clickLinksTab(): void {
-    cy.get(AddProductPageLocators.LinksTab)
-        .click();
+	cy.get(AddProductPageLocators.LinksTab)
+		.click();
 }
 
 export function typeCategories(categories: string | string[]): void {
-    if (Array.isArray(categories)) {
-        categories.forEach(category => {
+	if (Array.isArray(categories)) {
+		categories.forEach(category => {
 
-            cy.intercept({
-                method: 'GET',
-                url: `/${Cypress.env('adminUrl')}`,
-                query: {
-                    route: 'catalog/category/autocomplete',
+			cy.intercept({
+				method: 'GET',
+				url: `/${Cypress.env('adminUrl')}`,
+				query: {
+					route: 'catalog/category/autocomplete',
 
-                }
-            }).as('getCategories');
-            // { fixture: 'categories' }
-            cy.get(AddProductPageLocators.CategoriesField)
-                .click()
-                .clear()
-                .type(category);
-
-
-            cy.wait('@getCategories');
-            cy.contains(AddProductPageLocators.CategoriesDropDown, category)
-                .should('be.visible')
-                .click();
+				}
+			}).as('getCategories');
+			// { fixture: 'categories' }
+			cy.get(AddProductPageLocators.CategoriesField)
+				.click()
+				.clear()
+				.type(category);
 
 
-
-        });
-    } else {
-        cy.get(AddProductPageLocators.CategoriesField)
-            .click()
-            .clear()
-            .type(categories);
-
-        cy.contains(AddProductPageLocators.CategoriesDropDown, categories)
-            .should('be.visible')
-            .click();
+			cy.wait('@getCategories');
+			cy.contains(AddProductPageLocators.CategoriesDropDown, category)
+				.should('be.visible')
+				.click();
 
 
-    }
+
+		});
+	} else {
+		cy.get(AddProductPageLocators.CategoriesField)
+			.click()
+			.clear()
+			.type(categories);
+
+		cy.contains(AddProductPageLocators.CategoriesDropDown, categories)
+			.should('be.visible')
+			.click();
+
+
+	}
 
 }
 
 export function saveAddedProduct(): void {
-    cy.intercept({
-        method: 'POST',
-        url: `/${Cypress.env('adminUrl')}`,
-        query: {
-            route: 'catalog/product/add'
+	cy.intercept({
+		method: 'POST',
+		url: `/${Cypress.env('adminUrl')}`,
+		query: {
+			route: 'catalog/product/add'
 
-        }
-    }).as('addedProduct');
-    cy.get(AddProductPageLocators.Save_Product_Button)
-        .click();
+		}
+	}).as('addedProduct');
+	cy.get(AddProductPageLocators.Save_Product_Button)
+		.click();
 }
 
