@@ -6,39 +6,39 @@ import { Product } from '../../resourses/models/Product';
 
 describe('Product creation', () => {
 
-    describe('Adding new product', () => {
+	describe('Adding new product', () => {
 
 
-        const product: Product = {
-            name: 'TOMEN200',
-            metaTag: 'nout',
-            model: 'JK',
-            categories: ['Cameras', 'Components']
+		const product: Product = {
+			name: 'TOMEN200',
+			metaTag: 'nout',
+			model: 'JK',
+			categories: ['Cameras', 'Components']
 
-        };
+		};
 
-        before(() => {
-            //Setup
-            cy.loginByApi();
-            cy.database('deleteData', 'oc_product_description', product.name);
+		before(() => {
+			//Setup
+			cy.loginByApi();
+			cy.database('deleteData', product.name, 'oc_product_description');
 
-        });
+		});
 
-        it('When all mandatory fields are filled, success message is displayed', () => {
+		it('When all mandatory fields are filled, success message is displayed', () => {
 
-            //Act
-            LeftMenuPart.goToProductPage();
-            ProductPage.gotoAddProductPage();
-            AddProductPage.typeProductName(product.name);
-            AddProductPage.typeMegaTagTitle(product.metaTag);
-            AddProductPage.clickDataTab();
-            AddProductPage.typeModel(product.model);
-            AddProductPage.clickLinksTab();
-            AddProductPage.typeCategories(product.categories);
-            AddProductPage.saveAddedProduct();
+			//Act
+			LeftMenuPart.goToProductPage();
+			ProductPage.gotoAddProductPage();
+			AddProductPage.typeProductName(product.name);
+			AddProductPage.typeMegaTagTitle(product.metaTag);
+			AddProductPage.clickDataTab();
+			AddProductPage.typeModel(product.model);
+			AddProductPage.clickLinksTab();
+			AddProductPage.typeCategories(product.categories);
+			AddProductPage.saveAddedProduct();
 
-            //Assertion
-            ProductPage.assertSuccessMessageDisplayed();
-        });
-    });
+			//Assertion
+			ProductPage.assertSuccessMessageDisplayed();
+		});
+	});
 });

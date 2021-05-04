@@ -3,13 +3,6 @@
 declare namespace Cypress {
 
 
-
-
-  type dbQueryArg = {
-    entity: string;
-    query: object | [object];
-  };
-
   interface Chainable {
 
     /**
@@ -24,6 +17,6 @@ declare namespace Cypress {
      */
     loginByApi(): Chainable<Response>;
 
-    database(operation: string, entity: string, item: string, log?: boolean): Chainable<any[]>;
+    database(operation: string, item: string, entity?: string, log?: boolean): Chainable<any[]>;
   }
 }
